@@ -10,9 +10,15 @@ It also uses as references this other sources:
 
 ## 1. Introduction
 
-Marketing mix models or Media mix models are used to understand how media spending affects sales, so as to optimize future budget allocation. These models are usually based on weekly or monthly aggregated national or geo level data. The data may include sales, price, product distribution, media spend in different channels, and external factors such as macroeconomic forces, weather, seasonality, and market competition.
-ROAS (return on ad spend) and mROAS (marginal ROAS) are the key metrics to look at. High ROAS indicates the channel is efficient, high mROAS means increasing spend in the channel will yield a high return based on current spending level.
-The ultimate goal is to create the best funnel to have the best ROI (return on investment).
+**_Marketing mix models or Media mix models_** are used to understand how media spending affects sales, so as to optimize future budget allocation.
+
+These models are usually based on weekly or monthly aggregated national or geo level data. The data may include **sales, price, product distribution, media spend in different channels**, and external factors such as macroeconomic forces, weather, seasonality, and market competition.
+
+**ROAS (return on ad spend)** and **mROAS (marginal ROAS)** are the key metrics to look at. High ROAS indicates the channel is efficient, high mROAS means increasing spend in the channel will yield a high return based on current spending level.
+
+The ultimate goal is to create the best funnel to have the best **ROI (return on investment)**.
+
+---
 
 ### 1.1 A completer
 
@@ -20,31 +26,34 @@ The ultimate goal is to create the best funnel to have the best ROI (return on i
 
 ## 2.Business Case Study
 
-Let's first define the business problem we are trying to solve. We want to optimize the marketing budget allocation of our client with the following characteristics:
+### 2.1 Problem Definition
 
-- Sales data: weekly sales of the client.
-- Media spend data: weekly spend on 5 different media channels
-- Domain knowledge:
+Let's first define the **business problem** we are trying to solve. We want to optimize **the marketing budget allocation** of our client with the following characteristics:
+
+- **_*Sales data*_**: weekly sales of the client.
+- **_*Media spend* data_**: weekly spend on 5 different media channels
+- **_*Domain knowledge*_**:
   - We know that there has a been an positive sales trend which we believe comes from a strong economic growth.
   - We also know that there is a yearly seasonality effect.
 
 #IMAGE
+
 There is a causal relationship between marketing and sales, but what is the nature of that relationship? We have to take into account that there is :
 
-- a carry-over effect (adstock). Meaning, the effect of spend on sales is not instantaneous but accumulates over time.
-- a saturation effect. Meaning, the effect of spend on sales is not linear but saturates at some point
+- a **carry-over effect (adstock)**. Meaning, the effect of spend on sales is not instantaneous but accumulates over time.
+- a **saturation effect**. Meaning, the effect of spend on sales is not linear but saturates at some point
 
-### 2.1 Data Generation
+### 2.2 Data Generation
 
 > 📄 Find all the Generation process in the Notebook `1-Data_generation.ipynb`  
 > 📄 Find a simplified Data_generation function in the Script `data_generator_function.py`
 
 As described in the section above, we want a dataset with:
 
-- Sales variables:
+- **Sales variables:**
   Sales ( the target variable)
 
-- Media Variables:
+- **Media Variables:**
 
   - ooh (Out of home spend)
   - tv (Television spend)
@@ -54,10 +63,12 @@ As described in the section above, we want a dataset with:
   - facebook_I (facebook impressions)
   - search_clicks_P (Google search ads performence,number of clicks)
 
-- Control Variables:
+- **Control Variables:**
   competitor_sales_B (competitor sales baseline)
 
-To construct our dataset we considered 4 years of weekly data.
+---
+
+To construct our dataset we considered <u>4 years of weekly data.</u>
 
 From what we know from the domain knowledge, we have described the demand with an increasing trend for organic growth, with a seasonality (oscillation) in the demand each year.
 
@@ -82,13 +93,14 @@ For the adstock, we set a maximum lag effect of 8 weeks, and we chose our alpha 
 | `search` | Digital, intent-based | **0.0 – 0.2** | No carryover effect: impact is immediate (direct response channel) |
 
 Same for the saturation:
-| Channel | Type | λ | Justification |
-| ---------- | --------------------- | -------------------------- | ---------------------------------------------------------------------------------- |
-| `tv` | Offline, mass media | **0.5 – 1.5** | Strong saturation: TV reach saturates quickly (broad audience) |
-| `ooh` | Offline, visual | **1.0 – 2.0** | Moderate saturation, especially in high-exposure urban areas |
-| `print` | Offline, print media | **1.5 – 3.0** | Low saturation (narrow audience); hard to reach saturation point |
-| `facebook` | Digital, paid social | **0.5 – 1.5** | Can saturate fast with high budget, algorithmically optimized |
-| `search` | Digital, intent-based | **2.0 – 4.0** | Very low saturation: conversion effectiveness remains linear longer (pull channel) |
+
+| Channel    | Type                  | λ             | Justification                                                                      |
+| ---------- | --------------------- | ------------- | ---------------------------------------------------------------------------------- |
+| `tv`       | Offline, mass media   | **0.5 – 1.5** | Strong saturation: TV reach saturates quickly (broad audience)                     |
+| `ooh`      | Offline, visual       | **1.0 – 2.0** | Moderate saturation, especially in high-exposure urban areas                       |
+| `print`    | Offline, print media  | **1.5 – 3.0** | Low saturation (narrow audience); hard to reach saturation point                   |
+| `facebook` | Digital, paid social  | **0.5 – 1.5** | Can saturate fast with high budget, algorithmically optimized                      |
+| `search`   | Digital, intent-based | **2.0 – 4.0** | Very low saturation: conversion effectiveness remains linear longer (pull channel) |
 
 ![alt text](images/image-3.png)
 
