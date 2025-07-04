@@ -101,3 +101,5 @@ We then add the Facebook impressions and google search clicks, and then the cont
 Finally, we create our target value, the sales, that we assume it is a linear combination of the effect signal, the trend and the seasonal components, plus the two events and an intercept. We also add some Gaussian noise.
 
 ![alt text](images/image-5.png)
+
+### 2.2 Exploratory Data Analysis
