@@ -1,0 +1,7 @@
+Installation tips
+
+In anaconda/miniconda:
+# conda create -n MMMenv python=3.11
+# conda activate MMMenv
+# pip install -r requirements.txt
+# conda install m2w64-toolchain
