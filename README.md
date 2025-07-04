@@ -61,15 +61,15 @@ To construct our dataset we considered 4 years of weekly data.
 
 From what we know from the domain knowledge, we have described the demand with an increasing trend for organic growth, with a seasonality (oscillation) in the demand each year.
 
-![alt text](image.png)
+![alt text](images/image.png)
 
 We also created a proxy for demand as in reality, the true demand is never observable, but we can find proxies.
 
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 
 After that, we created synthetic data for each marketing channel.The different channel spends are correlated with demand, and also are designed by different marketing strategy (for example high budget, bursty campaigns for TV, or relatively consistent with moderate noise for out-of-home).
 
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 
 Next, we pass the raw signal through the two transformations: first the geometric adstock (carryover effect) and then the logistic saturation.
 For the adstock, we set a maximum lag effect of 8 weeks, and we chose our alpha parameter accordingly to the media:
@@ -90,14 +90,14 @@ Same for the saturation:
 | `facebook` | Digital, paid social | **0.5 – 1.5** | Can saturate fast with high budget, algorithmically optimized |
 | `search` | Digital, intent-based | **2.0 – 4.0** | Very low saturation: conversion effectiveness remains linear longer (pull channel) |
 
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 
 And we can visualize the effect signal for each channel after each transformation:
 
-![alt text](image-4.png)
+![alt text](images/image-4.png)
 
 We then add the Facebook impressions and google search clicks, and then the control variable that is the competitor sales baseline ( that also follows trend and seasonality)
 
 Finally, we create our target value, the sales, that we assume it is a linear combination of the effect signal, the trend and the seasonal components, plus the two events and an intercept. We also add some Gaussian noise.
 
-![alt text](image-5.png)
+![alt text](images/image-5.png)
