@@ -18,11 +18,11 @@ These models are usually based on weekly or monthly aggregated national or geo l
 
 The ultimate goal is to create the best funnel to have the best **ROI (return on investment)**.
 
----
+--
 
 ### 1.1 A completer
 
----
+--
 
 ## 2.Business Case Study
 
@@ -46,7 +46,7 @@ There is a causal relationship between marketing and sales, but what is the natu
 ### 2.2 Data Generation
 
 > 📄 Find all the Generation process in the Notebook `1-Data_generation.ipynb`  
-> 📄 Find a simplified Data_generation function in the Script `data_generator_function.py`
+>  📄 Find a simplified Data_generation function in the Script `data_generator_function.py`
 
 As described in the section above, we want a dataset with:
 
@@ -65,8 +65,6 @@ As described in the section above, we want a dataset with:
 
 - **Control Variables:**
   competitor_sales_B (competitor sales baseline)
-
----
 
 To construct our dataset we considered <u>4 years of weekly data.</u>
 
@@ -114,4 +112,222 @@ Finally, we create our target value, the sales, that we assume it is a linear co
 
 ![alt text](images/image-5.png)
 
-### 2.2 Exploratory Data Analysis
+### 2.2 Exploratory Data Analysis and Feature Engineering
+
+> 📄 Find more details on the EDA and FE in `2-EDA and FE.ipynb`
+
+Now that we have our data let's do the exploratory data analysis. (This one will be faster than the usuals because we already know well our dataset given that we constructed it).
+
+We reduced our dataset to only the columns that would be available from real raw data delivered by the company(sales,spend per channel,sales of competitor,impressions and clicks), and start by visualizing them.
+
+![alt text](images/image-6.png)
+
+We also compare the monthly stats on ad spends:
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tv_s</th>
+      <th>ooh_s</th>
+      <th>print_s</th>
+      <th>facebook_s</th>
+      <th>search_s</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>209</td>
+      <td>209</td>
+      <td>209</td>
+      <td>209</td>
+      <td>209</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>$6,342</td>
+      <td>$1,657</td>
+      <td>$142</td>
+      <td>$6,886</td>
+      <td>$3,328</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>$11,416</td>
+      <td>$436</td>
+      <td>$476</td>
+      <td>$2,470</td>
+      <td>$809</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>$0</td>
+      <td>$810</td>
+      <td>$0</td>
+      <td>$2,052</td>
+      <td>$1,589</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>$0</td>
+      <td>$1,326</td>
+      <td>$0</td>
+      <td>$4,927</td>
+      <td>$2,673</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>$0</td>
+      <td>$1,611</td>
+      <td>$0</td>
+      <td>$6,642</td>
+      <td>$3,322</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>$12,002</td>
+      <td>$1,959</td>
+      <td>$0</td>
+      <td>$8,313</td>
+      <td>$3,834</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>$49,311</td>
+      <td>$2,779</td>
+      <td>$2,839</td>
+      <td>$15,080</td>
+      <td>$5,387</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+NB : Media contribution du modele vs de nos données generees à comparer
+
+We can see the current allocations on the different channels but now the question is if this is the most profitable split and spendings.(Always remembering that the ad spends are not the only source explaining the sales).
+
+And now we do a quick feature engineering step befor modeling the process.For this step, we add more layers to describe temporality and we include a trend feature (that will help us see the seasonality as 4 Fourier modes).
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>sales</th>
+      <th>tv_s</th>
+      <th>ooh_s</th>
+      <th>print_s</th>
+      <th>facebook_s</th>
+      <th>search_s</th>
+      <th>trend</th>
+      <th>year</th>
+      <th>month</th>
+      <th>dayofyear</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-01-04</td>
+      <td>162277.109282</td>
+      <td>0.0</td>
+      <td>963.639807</td>
+      <td>0.0</td>
+      <td>4296.052070</td>
+      <td>2182.363211</td>
+      <td>0</td>
+      <td>2021</td>
+      <td>1</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-01-11</td>
+      <td>170493.217138</td>
+      <td>0.0</td>
+      <td>1015.604279</td>
+      <td>0.0</td>
+      <td>4324.637643</td>
+      <td>2151.854375</td>
+      <td>1</td>
+      <td>2021</td>
+      <td>1</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-01-18</td>
+      <td>144523.455074</td>
+      <td>0.0</td>
+      <td>1102.396049</td>
+      <td>0.0</td>
+      <td>4926.757799</td>
+      <td>2168.730601</td>
+      <td>2</td>
+      <td>2021</td>
+      <td>1</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-01-25</td>
+      <td>239399.578756</td>
+      <td>0.0</td>
+      <td>1371.427530</td>
+      <td>0.0</td>
+      <td>7538.774028</td>
+      <td>3306.440497</td>
+      <td>3</td>
+      <td>2021</td>
+      <td>1</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-02-01</td>
+      <td>195422.511307</td>
+      <td>0.0</td>
+      <td>1015.958803</td>
+      <td>0.0</td>
+      <td>5212.689979</td>
+      <td>2378.653779</td>
+      <td>4</td>
+      <td>2021</td>
+      <td>2</td>
+      <td>32</td>
+    </tr>
+  </tbody>
+</table>
+</div>
