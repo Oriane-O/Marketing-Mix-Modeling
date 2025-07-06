@@ -125,20 +125,7 @@ We reduced our dataset to only the columns that would be available from real raw
 We also compare the monthly stats on ad spends:
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -226,20 +213,6 @@ We can see the current allocations on the different channels but now the questio
 And now we do a quick feature engineering step befor modeling the process.For this step, we add more layers to describe temporality and we include a trend feature (that will help us see the seasonality as 4 Fourier modes).
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -331,3 +304,7 @@ And now we do a quick feature engineering step befor modeling the process.For th
   </tbody>
 </table>
 </div>
+
+## 3. Modelling
+
+### 3.1 Model Set up
